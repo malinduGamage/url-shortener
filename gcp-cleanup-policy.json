@@ -1,0 +1,20 @@
+[
+  {
+    "name": "keep-recent-versions",
+    "action": {
+      "type": "Keep"
+    },
+    "mostRecentVersions": {
+      "keepCount": 5
+    }
+  },
+  {
+    "name": "delete-old-images",
+    "action": {
+      "type": "Delete"
+    },
+    "condition": {
+      "olderThan": "1209600s" 
+    }
+  }
+]
