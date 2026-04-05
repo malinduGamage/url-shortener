@@ -32,10 +32,12 @@ jobs:
             SUPABASE_URL
             SUPABASE_ANON_KEY
             SPRING_BOOT_URL
+            CLOUDFLARE_ORIGIN_SECRET
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
           SPRING_BOOT_URL: ${{ secrets.SPRING_BOOT_URL }}
+          CLOUDFLARE_ORIGIN_SECRET: ${{ secrets.CLOUDFLARE_ORIGIN_SECRET }}
 
   deploy-redirect:
     runs-on: ubuntu-latest
