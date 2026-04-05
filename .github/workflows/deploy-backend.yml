@@ -1,0 +1,45 @@
+name: Deploy Backend to GCP Cloud Run
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'url-shortening-service/**'
+
+jobs:
+  deploy-to-cloud-run:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: url-shortening-service
+    steps:
+      - uses: actions/checkout@v4
+      
+      - id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Authorize Docker push
+        run: gcloud auth configure-docker
+
+      - name: Build and Push Docker image
+        run: |
+          docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/url-shortener-backend:${{ github.sha }} .
+          docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/url-shortener-backend:${{ github.sha }}
+
+      - name: Deploy to Cloud Run
+        uses: google-github-actions/deploy-cloudrun@v2
+        with:
+          service: url-shortener-backend
+          image: gcr.io/${{ secrets.GCP_PROJECT_ID }}/url-shortener-backend:${{ github.sha }}
+          region: us-central1
+          env_vars: |
+            DB_URL=${{ secrets.SUPABASE_DB_URL }}
+            DB_USERNAME=${{ secrets.SUPABASE_DB_USERNAME }}
+            DB_PASSWORD=${{ secrets.SUPABASE_DB_PASSWORD }}
+            APP_BASE_URL=${{ secrets.APP_BASE_URL }}

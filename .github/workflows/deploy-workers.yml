@@ -1,0 +1,48 @@
+name: Deploy Cloudflare Workers
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'cloudflare-gateway-worker/**'
+      - 'cloudflare-redirect-worker/**'
+
+jobs:
+  deploy-gateway:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: cloudflare-gateway-worker
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm install
+      - name: Deploy Gateway Worker
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: cloudflare-gateway-worker
+
+  deploy-redirect:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: cloudflare-redirect-worker
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm install
+      - name: Deploy Redirect Worker
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: cloudflare-redirect-worker
