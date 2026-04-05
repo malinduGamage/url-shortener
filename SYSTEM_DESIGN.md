@@ -49,7 +49,6 @@ flowchart TD
 
 ### 3. Redirect Service (Cloudflare Worker)
 
-- **Endpoint**: `https://s.yourdomain.com/:shortCode`
 - **Role**:
   - High-performance redirection logic at the edge.
   - **Caching**: Uses Cloudflare KV to store URL mappings (24h TTL) to minimize database hits.
