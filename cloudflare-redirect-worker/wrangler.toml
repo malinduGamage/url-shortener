@@ -1,6 +1,7 @@
 name = "cloudflare-redirect-worker"
 main = "src/index.ts"
 compatibility_date = "2024-04-05"
+workers_dev = true
 
 kv_namespaces = [
   { binding = "URL_CACHE", id = "4fa6c50aeb83488a8ba0c2a8467df468" }
