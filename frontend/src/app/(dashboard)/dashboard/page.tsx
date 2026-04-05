@@ -174,7 +174,7 @@ export default function Dashboard() {
                         style={{ fontSize: '1.25rem', fontWeight: 600, color: 'var(--accent)', textDecoration: 'none' }}
                         title="Open Short Link"
                       >
-                        /{url.short_code}
+                        {(process.env.NEXT_PUBLIC_REDIRECT_BASE || 'https://cloudflare-redirect-worker.malindug-21.workers.dev')}/{url.short_code}
                       </a>
                       <a href={url.long_url} target="_blank" rel="noreferrer" style={{ color: 'var(--text-muted)' }} title="Visit original URL">
                         <ExternalLink size={16} />
