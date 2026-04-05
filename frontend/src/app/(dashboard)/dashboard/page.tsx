@@ -167,7 +167,15 @@ export default function Dashboard() {
                 <div key={url.id} className="glass-card" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <div style={{ overflow: 'hidden', paddingRight: '24px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-                      <span style={{ fontSize: '1.25rem', fontWeight: 600, color: 'var(--accent)' }}>/{url.short_code}</span>
+                      <a 
+                        href={`${process.env.NEXT_PUBLIC_REDIRECT_BASE}/${url.short_code}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        style={{ fontSize: '1.25rem', fontWeight: 600, color: 'var(--accent)', textDecoration: 'none' }}
+                        title="Open Short Link"
+                      >
+                        /{url.short_code}
+                      </a>
                       <a href={url.long_url} target="_blank" rel="noreferrer" style={{ color: 'var(--text-muted)' }} title="Visit original URL">
                         <ExternalLink size={16} />
                       </a>
@@ -183,7 +191,12 @@ export default function Dashboard() {
                     </div>
                     <button 
                       className="btn-secondary" 
-                      onClick={() => navigator.clipboard.writeText(`${window.location.protocol}//${window.location.host}/${url.short_code}`)}
+                      onClick={() => {
+                        const redirectBase = process.env.NEXT_PUBLIC_REDIRECT_BASE || '';
+                        const shortUrl = `${redirectBase}/${url.short_code}`;
+                        navigator.clipboard.writeText(shortUrl);
+                        alert('Link copied to clipboard!');
+                      }}
                       title="Copy short link"
                     >
                       <Copy size={18} />
