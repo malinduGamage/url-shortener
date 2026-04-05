@@ -3,9 +3,9 @@ main = "src/index.ts"
 compatibility_date = "2024-04-05"
 
 kv_namespaces = [
-  { binding = "URL_CACHE", id = "REPLACE_WITH_KV_NAMESPACE_ID" }
+  { binding = "URL_CACHE", id = "4fa6c50aeb83488a8ba0c2a8467df468" }
 ]
 
 [vars]
-SUPABASE_URL = "https://your-project.supabase.co"
-SUPABASE_ANON_KEY = "your-anon-key"
+SUPABASE_URL = "https://rjecvysolkvndckxgdez.supabase.co"
+SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJqZWN2eXNvbGt2bmRja3hnZGV6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUxNjM0NjgsImV4cCI6MjA5MDczOTQ2OH0.EDIqN8db5ajkeXEmwB4iTgQ0b0MP9jG7hPE4PXLjaLA"
