@@ -40,7 +40,7 @@ jobs:
           image: gcr.io/${{ secrets.GCP_PROJECT_ID }}/url-shortener-backend:${{ github.sha }}
           region: us-central1
           env_vars: |
-            DB_URL=${{ secrets.SUPABASE_DB_URL }}
-            DB_USERNAME=${{ secrets.SUPABASE_DB_USERNAME }}
-            DB_PASSWORD=${{ secrets.SUPABASE_DB_PASSWORD }}
+            DB_URL=${{ secrets.DB_URL }}
+            DB_USERNAME=${{ secrets.DB_USERNAME }}
+            DB_PASSWORD=${{ secrets.DB_PASSWORD }}
             APP_BASE_URL=${{ secrets.APP_BASE_URL }}
