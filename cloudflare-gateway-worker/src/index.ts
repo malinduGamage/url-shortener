@@ -18,12 +18,13 @@ export default {
 
 
     const url = new URL(request.url);
+    const normalizedPath = url.pathname.replace(/\/+/g, '/'); // Normalize // to /
 
     // Only proxy /api/* requests
-    if (url.pathname.startsWith('/api/')) {
+    if (normalizedPath.startsWith('/api/')) {
       const parsedHeaders = new Headers(request.headers);
       // Enforce auth only for creating URLs
-      if (request.method === 'POST' && url.pathname.includes('/urls')) {
+      if (request.method === 'POST' && normalizedPath.includes('/urls')) {
         const authHeader = request.headers.get('Authorization');
         if (!authHeader) {
           return new Response(JSON.stringify({ error: 'Unauthorized: Missing Authorization header' }), { 
@@ -50,7 +51,7 @@ export default {
         parsedHeaders.set('X-User-Id', user.id);
       }
 
-      const backendUrl = env.SPRING_BOOT_URL + url.pathname + url.search;
+      const backendUrl = env.SPRING_BOOT_URL + normalizedPath + url.search;
       const proxyRequest = new Request(backendUrl, {
         method: request.method,
         headers: parsedHeaders,
@@ -59,6 +60,16 @@ export default {
       
       try {
         const response = await fetch(proxyRequest);
+        const contentType = response.headers.get('Content-Type') || '';
+        
+        // If backend returned HTML (like a default error page), wrap it in JSON
+        if (!contentType.includes('application/json') && !response.ok) {
+           return new Response(JSON.stringify({ error: `Backend error (${response.status})` }), { 
+             status: response.status, 
+             headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+           });
+        }
+
         // Copy response and add CORS headers
         const newResponse = new Response(response.body, response);
         Object.entries(corsHeaders).forEach(([key, value]) => {

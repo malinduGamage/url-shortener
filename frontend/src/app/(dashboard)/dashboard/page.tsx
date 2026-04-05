@@ -63,7 +63,8 @@ export default function Dashboard() {
     setCreating(true)
     setError('')
 
-    const gatewayUrl = process.env.NEXT_PUBLIC_API_GATEWAY || 'http://localhost:8080'
+    // Sanitize the URL to remove any trailing slashes
+    const gatewayUrl = (process.env.NEXT_PUBLIC_API_GATEWAY || 'http://localhost:8080').replace(/\/$/, '')
     
     try {
       const res = await fetch(`${gatewayUrl}/api/v1/urls`, {
