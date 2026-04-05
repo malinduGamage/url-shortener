@@ -1,6 +1,7 @@
 name: Deploy Backend to GCP Cloud Run
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
