@@ -30,14 +30,14 @@ jobs:
 
       - name: Build and Push Docker image
         run: |
-          docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/url-shortener-backend:${{ github.sha }} .
-          docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/url-shortener-backend:${{ github.sha }}
+          docker build -t us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/url-shortener-repo/backend:${{ github.sha }} .
+          docker push us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/url-shortener-repo/backend:${{ github.sha }}
 
       - name: Deploy to Cloud Run
         uses: google-github-actions/deploy-cloudrun@v2
         with:
           service: url-shortener-backend
-          image: gcr.io/${{ secrets.GCP_PROJECT_ID }}/url-shortener-backend:${{ github.sha }}
+          image: us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/url-shortener-repo/backend:${{ github.sha }}
           region: us-central1
           env_vars: |
             DB_URL=${{ secrets.DB_URL }}
