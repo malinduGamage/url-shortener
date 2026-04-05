@@ -6,6 +6,4 @@ kv_namespaces = [
   { binding = "URL_CACHE", id = "4fa6c50aeb83488a8ba0c2a8467df468" }
 ]
 
-[vars]
-SUPABASE_URL = ""
-SUPABASE_ANON_KEY = ""
+# Variables are injected via CI/CD environment variables

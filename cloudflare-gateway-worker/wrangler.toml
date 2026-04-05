@@ -2,7 +2,4 @@ name = "cloudflare-gateway-worker"
 main = "src/index.ts"
 compatibility_date = "2024-04-05"
 
-[vars]
-SPRING_BOOT_URL = "http://localhost:8080" # Change this in production
-SUPABASE_URL = ""
-SUPABASE_ANON_KEY = ""
+# Variables are injected via CI/CD environment variables
