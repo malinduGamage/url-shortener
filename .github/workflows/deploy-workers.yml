@@ -29,9 +29,7 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: cloudflare-gateway-worker
           secrets: |
-            SUPABASE_URL
             SUPABASE_ANON_KEY
-            SPRING_BOOT_URL
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
@@ -56,7 +54,6 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: cloudflare-redirect-worker
           secrets: |
-            SUPABASE_URL
             SUPABASE_ANON_KEY
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
