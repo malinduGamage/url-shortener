@@ -7,23 +7,24 @@ This document outlines the architecture and design decisions for the URL Shorten
 The system is designed for high availability, low latency (via edge caching), and secure communication between components.
 
 ```mermaid
-graph TD
+flowchart TD
     User((User))
     Edge[Cloudflare Edge]
     Gateway[Gateway Worker]
     Redirect[Redirect Worker]
     KV[(Cloudflare KV Cache)]
-    Backend[Spring Boot Backend<br/>GCP Cloud Run]
+    Backend[Spring Boot Backend]
     DB[(Supabase PostgreSQL)]
     Auth[(Supabase Auth)]
 
-    User -->|API Requests| Edge
+    User --> API_Req[API Requests] --> Edge
+    User --> Short_URL[Short URL] --> Edge
+
     Edge --> Gateway
     Gateway -->|Verify Token| Auth
     Gateway -->|Proxy + Secret Header| Backend
     Backend --> DB
 
-    User -->|Short URL| Edge
     Edge --> Redirect
     Redirect -->|Check Cache| KV
     Redirect -->|Fallback| DB
@@ -34,33 +35,37 @@ graph TD
 ## Core Components
 
 ### 1. Frontend (Next.js)
+
 - **Technology**: React/Next.js with Tailwind CSS.
 - **Role**: Provides the dashboard for users to create, manage, and track their shortened URLs.
 - **Auth**: Integrates with Supabase Auth for client-side session management.
 
 ### 2. API Gateway (Cloudflare Worker)
-- **Endpoint**: `https://api.yourdomain.com/*`
-- **Role**: 
-    - Proxies requests to the Spring Boot backend on GCP.
-    - Validates Supabase JWT tokens for protected routes (e.g., creating URLs).
-    - Injects the `X-Cloudflare-Secret` to secure the backend origin.
+
+- **Role**:
+  - Proxies requests to the Spring Boot backend on GCP.
+  - Validates Supabase JWT tokens for protected routes (e.g., creating URLs).
+  - Injects the `X-Cloudflare-Secret` to secure the backend origin.
 
 ### 3. Redirect Service (Cloudflare Worker)
+
 - **Endpoint**: `https://s.yourdomain.com/:shortCode`
-- **Role**: 
-    - High-performance redirection logic at the edge.
-    - **Caching**: Uses Cloudflare KV to store URL mappings (24h TTL) to minimize database hits.
-    - **Analytics**: Asynchronously logs visitor data (IP, Country, User-Agent) to Supabase.
+- **Role**:
+  - High-performance redirection logic at the edge.
+  - **Caching**: Uses Cloudflare KV to store URL mappings (24h TTL) to minimize database hits.
+  - **Analytics**: Asynchronously logs visitor data (IP, Country, User-Agent) to Supabase.
 
 ### 4. Backend Service (Spring Boot)
+
 - **Technology**: Java 21, Spring Boot 3.
 - **Hosting**: GCP Cloud Run (Serverless).
-- **Role**: 
-    - Business logic for generating unique short codes.
-    - Database management (CRUD operations for URLs).
-    - **Security**: Implements a `CloudflareSecurityFilter` to block any request not originating from the Cloudflare Worker.
+- **Role**:
+  - Business logic for generating unique short codes.
+  - Database management (CRUD operations for URLs).
+  - **Security**: Implements a `CloudflareSecurityFilter` to block any request not originating from the Cloudflare Worker.
 
 ### 5. Database & Auth (Supabase)
+
 - **PostgreSQL**: Stores URL mappings and analytics logs.
 - **Real-time**: Enables immediate updates for the dashboard.
 - **Auth**: Centralized identity management.
