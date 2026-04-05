@@ -51,7 +51,9 @@ export default {
         parsedHeaders.set('X-User-Id', user.id);
       }
 
-      const backendUrl = env.SPRING_BOOT_URL + normalizedPath + url.search;
+      // Strip the /api prefix before sending to the backend
+      const backendPath = normalizedPath.replace(/^\/api/, '');
+      const backendUrl = env.SPRING_BOOT_URL + backendPath + url.search;
       const proxyRequest = new Request(backendUrl, {
         method: request.method,
         headers: parsedHeaders,
