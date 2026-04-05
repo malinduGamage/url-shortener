@@ -2,6 +2,7 @@ export interface Env {
   SPRING_BOOT_URL: string;
   SUPABASE_URL: string;
   SUPABASE_ANON_KEY: string;
+  CLOUDFLARE_ORIGIN_SECRET: string;
 }
 
 const corsHeaders = {
@@ -54,6 +55,9 @@ export default {
       // Strip the /api prefix before sending to the backend
       const backendPath = normalizedPath.replace(/^\/api/, '');
       const backendUrl = env.SPRING_BOOT_URL + backendPath + url.search;
+      // Inject the origin secret to verify this request came from Cloudflare
+      parsedHeaders.set('X-Cloudflare-Secret', env.CLOUDFLARE_ORIGIN_SECRET);
+
       const proxyRequest = new Request(backendUrl, {
         method: request.method,
         headers: parsedHeaders,
