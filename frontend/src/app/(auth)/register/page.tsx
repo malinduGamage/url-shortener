@@ -16,50 +16,53 @@ export default function Register() {
     setLoading(true)
     setError('')
     setSuccess('')
-
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-    })
-
-    if (error) {
-      setError(error.message)
-    } else {
-      setSuccess('Check your email inbox to verify your account before logging in!')
-    }
+    const { error } = await supabase.auth.signUp({ email, password })
+    if (error) { setError(error.message) }
+    else { setSuccess('Check your inbox to verify your account before signing in.') }
     setLoading(false)
   }
 
   return (
     <div className="container">
-      <nav className="nav" style={{ padding: '24px 0' }}>
-        <Link href="/" className="nav-brand" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <LinkIcon className="text-accent" />
+      <nav className="nav">
+        <Link href="/" className="nav-brand" style={{ display: 'flex', alignItems: 'center', gap: '7px' }}>
+          <LinkIcon size={15} className="text-accent" />
           <span>ShortLink<span className="text-accent">.</span></span>
         </Link>
       </nav>
+
       <div className="auth-container">
+        <div style={{ marginBottom: '28px' }}>
+          <h1 style={{ fontSize: '1.75rem', marginBottom: '6px' }}>Create an account</h1>
+          <p style={{ fontSize: '0.9rem' }}>Start shortening links for free — no credit card required.</p>
+        </div>
+
         <div className="glass-panel">
-          <h2 style={{ textAlign: 'center', marginBottom: '24px' }}>Create an Account</h2>
-          {error && <div className="message-box error">{error}</div>}
+          {error   && <div className="message-box error">{error}</div>}
           {success && <div className="message-box success">{success}</div>}
           <form onSubmit={handleRegister}>
-            <div>
-              <label className="label">Email</label>
-              <input type="email" className="input-field" value={email} onChange={(e) => setEmail(e.target.value)} required />
-            </div>
-            <div>
-              <label className="label">Password</label>
-              <input type="password" className="input-field" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} />
-            </div>
-            <button type="submit" className="btn-primary" style={{ width: '100%', marginTop: '16px' }} disabled={loading || !!success}>
-              {loading ? 'Creating account...' : 'Sign up'}
+            <label className="label">Email</label>
+            <input
+              type="email" className="input-field"
+              placeholder="you@example.com"
+              value={email} onChange={e => setEmail(e.target.value)} required
+            />
+            <label className="label">Password</label>
+            <input
+              type="password" className="input-field"
+              placeholder="Min. 6 characters"
+              value={password} onChange={e => setPassword(e.target.value)} required minLength={6}
+            />
+            <button type="submit" className="btn-primary" style={{ width: '100%', marginTop: '8px' }} disabled={loading || !!success}>
+              {loading ? 'Creating account…' : 'Get started'}
             </button>
           </form>
-          <p style={{ textAlign: 'center', marginTop: '24px', fontSize: '0.875rem' }}>
-            Already have an account? <Link href="/login">Log in</Link>
-          </p>
         </div>
+
+        <p style={{ textAlign: 'center', marginTop: '20px', fontSize: '0.875rem', color: 'var(--text-muted)' }}>
+          Already have an account?{' '}
+          <Link href="/login" style={{ color: 'var(--accent)', fontWeight: 500 }}>Sign in</Link>
+        </p>
       </div>
     </div>
   )
