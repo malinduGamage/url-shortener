@@ -57,7 +57,7 @@ const ChartTip = ({ active, payload, label }: any) => {
   if (!active || !payload?.length) return null
   return (
     <div style={{ background: '#111113', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '8px', padding: '10px 14px', fontSize: '0.8125rem' }}>
-      <p style={{ color: '#71717A', marginBottom: '2px' }}>{label}</p>
+      <p style={{ color: 'var(--text-muted)', marginBottom: '2px' }}>{label}</p>
       <p style={{ color: '#FAFAFA', fontWeight: 600 }}>{payload[0].value} clicks</p>
     </div>
   )
@@ -165,7 +165,7 @@ export default function Dashboard() {
           <div style={{ display: 'flex', gap: '6px' }}>
             {RANGES.map(r => (
               <button key={r} onClick={() => setRange(r)} style={{
-                padding: '5px 14px', borderRadius: '6px', fontSize: '0.8125rem', cursor: 'pointer',
+                padding: '5px 14px', borderRadius: '6px', fontSize: '0.875rem', cursor: 'pointer',
                 fontFamily: 'Inter, sans-serif', transition: 'all 0.15s', fontWeight: 500,
                 background: range === r ? ACCENT : 'transparent',
                 color: range === r ? '#09090B' : 'var(--text-muted)',
@@ -183,7 +183,7 @@ export default function Dashboard() {
             <div key={label} className="glass-card" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
               <div style={{ padding: '10px', background: color, borderRadius: '8px', flexShrink: 0 }}>{icon}</div>
               <div>
-                <p style={{ fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '3px', color: 'var(--text-muted)' }}>{label}</p>
+                <p style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '3px', color: 'var(--text-muted)' }}>{label}</p>
                 <p style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--text-main)', lineHeight: 1, fontVariantNumeric: 'tabular-nums' }}>{value}</p>
               </div>
             </div>
@@ -204,8 +204,8 @@ export default function Dashboard() {
                       <stop offset="100%" stopColor={ACCENT} stopOpacity={0}    />
                     </linearGradient>
                   </defs>
-                  <XAxis dataKey="date" tick={{ fontSize: 10, fill: '#52525B' }} tickLine={false} axisLine={false} interval="preserveStartEnd" />
-                  <YAxis allowDecimals={false} tick={{ fontSize: 10, fill: '#52525B' }} tickLine={false} axisLine={false} />
+                  <XAxis dataKey="date" tick={{ fontSize: 10, fill: 'var(--text-muted)' }} tickLine={false} axisLine={false} interval="preserveStartEnd" />
+                  <YAxis allowDecimals={false} tick={{ fontSize: 10, fill: 'var(--text-muted)' }} tickLine={false} axisLine={false} />
                   <Tooltip content={<ChartTip />} />
                   <Area type="monotone" dataKey="clicks" stroke={ACCENT} strokeWidth={1.5} fill="url(#amberGrad)" dot={false} activeDot={{ r: 3, fill: ACCENT, strokeWidth: 0 }} />
                 </AreaChart>
@@ -302,7 +302,7 @@ export default function Dashboard() {
                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
                       <div style={{ textAlign: 'right' }}>
                         <p style={{ fontSize: '1.125rem', fontWeight: 700, color: 'var(--text-main)', lineHeight: 1, fontVariantNumeric: 'tabular-nums' }}>{filteredClicks}</p>
-                        <p style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>clicks</p>
+                        <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>clicks</p>
                       </div>
                       <Link href={`/analytics/${url.id}`} className="btn-secondary" style={{ padding: '7px 12px', fontSize: '0.8rem' }}>
                         <BarChart2 size={13} /> Analytics
